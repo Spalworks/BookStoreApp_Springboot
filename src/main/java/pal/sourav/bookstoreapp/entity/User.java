@@ -46,7 +46,7 @@ public class User {
 
 
 
-	public User(int userId2, UserDTO userData) {
+	public User(int userId2, UserDTO userData, boolean status) {
 		this.userID = userId2;
 		this.firstName = userData.getFirstName();
 		this.lastName = userData.getLastName();
@@ -55,5 +55,6 @@ public class User {
 		this.phoneNumber = userData.getPhoneNumber();
 		this.dob = userData.getDob();
 		this.password = userData.getPassword();
+		this.tokenStatus = status;
 	}
 }

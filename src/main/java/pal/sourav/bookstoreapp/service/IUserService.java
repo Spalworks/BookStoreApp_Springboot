@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.validation.Valid;
 import pal.sourav.bookstoreapp.dto.ChangePasswordDTO;
 import pal.sourav.bookstoreapp.dto.LoginDTO;
 import pal.sourav.bookstoreapp.dto.UserDTO;
@@ -22,17 +21,21 @@ public interface IUserService {
 
 	User createNewUser(UserDTO userData);
 	
-	User userLogin(@Valid LoginDTO dto);
+	User userLogin(LoginDTO dto);
 
-	User updateUserDataByEmail(String email, int userId, UserDTO userData);
+	User updateUserDataByEmail(String email, UserDTO userData);
+	
+	User updateUserDataById(int userId, UserDTO userData);
 	
 	User resetPassword(ChangePasswordDTO dto);
 
 	int deleteUserByToken(String token);
 
-	User getUserDataByToken(@Valid String token);
+	User getUserDataByToken(String token);
 
-	User verifyUserbyToken(@Valid String token);
+	User verifyUserbyToken(String token);
+
+	
 
 
 }

@@ -35,7 +35,7 @@ public class UserDTO {
 	@Pattern(regexp = "^[0-9]{10}$", message = "PhoneNumber should not be empty!")
 	private String phoneNumber;
 	
-	@NotBlank(message = "Date of Birth should not be empty!")
+//	@NotEmpty(message = "Date of Birth should not be empty!")
 //	@Pattern(regexp = "dd-MM-yyyy")
 	private Date dob;
 	

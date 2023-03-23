@@ -56,8 +56,11 @@ public class TokenUtil {
 
 		// decoding the token & verifying that with the given token
 		DecodedJWT decodedJWT = jwtVerifier.verify(token);
+		log.info("JWT decoded.......");
 		Claim claim = decodedJWT.getClaim("id");
+		log.info("claim successful..........");
 		userId = claim.asInt();
+		log.info("Decoded userId : " + userId);
 		return userId;
 	}
 	
