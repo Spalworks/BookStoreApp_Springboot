@@ -29,7 +29,7 @@ public class UserController {
 	
 	@Autowired
 	IUserService userService;
-
+	
 	
 	@GetMapping(value = {"", "/", "/getall"})
 	public ResponseEntity<ResponseDTO> getAllUser(){
@@ -57,6 +57,7 @@ public class UserController {
 		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.FOUND);
 	}
 	
+	
 	@GetMapping(value = "/get-user-by-token/{token}")
 	public ResponseEntity<ResponseDTO> getUserByToken(String token){
 		User result = userService.getUserDataByToken(token);
@@ -66,17 +67,17 @@ public class UserController {
 	}
 	
 	
-	
 	@GetMapping(value = "/verify-user-by-token/{token}")
-	public ResponseEntity<ResponseDTO> verifyUserbyToken(@Valid@PathVariable String token){
+	public ResponseEntity<ResponseDTO> verifyUserbyToken(@PathVariable String token){
 		User result = userService.verifyUserbyToken(token);
 		ResponseDTO responseDTO = new ResponseDTO(result, "Data retrived Successfully using token");
+		
 		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.FOUND);
 	}
 	
 	
 	@PostMapping(value = "/register")
-	public ResponseEntity<ResponseDTO> createUser(@RequestBody UserDTO userData){
+	public ResponseEntity<ResponseDTO> createUser(@Valid @RequestBody UserDTO userData){
 		User result = userService.createNewUser(userData);
 		ResponseDTO responseDTO = new ResponseDTO(result, "User data created successfully");
 		
@@ -85,7 +86,7 @@ public class UserController {
 	
 	
 	@PostMapping(value = "/login")
-	public ResponseEntity<ResponseDTO> userLogin(@RequestBody LoginDTO loginDto){
+	public ResponseEntity<ResponseDTO> userLogin(@Valid @RequestBody LoginDTO loginDto){
 		User result = userService.userLogin(loginDto);
 		ResponseDTO responseDTO = new ResponseDTO(result, "Congradulations!!! You've logged in successfully.");
 		
@@ -93,11 +94,18 @@ public class UserController {
 	}
 	
 	
+	@PutMapping(value = "/update-user-by-email/{email}")
+	public ResponseEntity<ResponseDTO> updateUserdata(@Valid @PathVariable String email, @Valid @RequestBody UserDTO userData){
+		User result = userService.updateUserDataByEmail(email, userData);
+		ResponseDTO responseDTO = new ResponseDTO(result, "UserData updated successfully");
+		
+		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
+	}
 	
 	
-	@PutMapping(value = "/update-user-by-email/{email}/{userId}")
-	public ResponseEntity<ResponseDTO> updateUserdata(@PathVariable String email, @PathVariable int userId, @RequestBody UserDTO userData){
-		User result = userService.updateUserDataByEmail(email, userId, userData);
+	@PutMapping(value = "/update-user-by-id/{userId}")
+	public ResponseEntity<ResponseDTO> updateUserdataById(@PathVariable int userId, @Valid @RequestBody UserDTO userData){
+		User result = userService.updateUserDataById(userId, userData);
 		ResponseDTO responseDTO = new ResponseDTO(result, "UserData updated successfully");
 		
 		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
@@ -105,7 +113,7 @@ public class UserController {
 	
 	
 	@PutMapping(value = "/updatePassword/{userId}")
-	public ResponseEntity<ResponseDTO> changePassword(@RequestBody ChangePasswordDTO dto){
+	public ResponseEntity<ResponseDTO> changePassword(@Valid @RequestBody ChangePasswordDTO dto){
 		User result = userService.resetPassword(dto);
 		ResponseDTO responseDTO = new ResponseDTO(result, "Password updated successfully");
 		
@@ -123,6 +131,5 @@ public class UserController {
 		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
 	}
 	
-	
-	
+		
 }
