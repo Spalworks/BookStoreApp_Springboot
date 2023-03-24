@@ -59,7 +59,7 @@ public class UserController {
 	
 	
 	@GetMapping(value = "/get-user-by-token/{token}")
-	public ResponseEntity<ResponseDTO> getUserByToken(String token){
+	public ResponseEntity<ResponseDTO> getUserByToken(@PathVariable String token){
 		User result = userService.getUserDataByToken(token);
 		ResponseDTO responseDTO = new ResponseDTO(result, "User Data retrieved successfully");
 		
