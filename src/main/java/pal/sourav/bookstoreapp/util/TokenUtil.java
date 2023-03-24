@@ -22,7 +22,8 @@ public class TokenUtil {
 		try {
 			// Setting up the algorithm
 			Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
-			String token = JWT.create().withClaim("id", id).sign(algorithm);
+			String token = JWT.create().withClaim("user_id", id).sign(algorithm);
+			log.info("Token encoded successfully");
 			return token;
 
 		} catch (JWTCreationException execption) {
@@ -44,23 +45,19 @@ public class TokenUtil {
 
 		try {
 			verification = JWT.require(Algorithm.HMAC256(TOKEN_SECRET));
-			log.info("Verification successful with TOKEN_SECRET");
 			
 		} catch (IllegalArgumentException e) {
-			log.info("Token verification failed");
 			e.printStackTrace();
 		}
 
 		JWTVerifier jwtVerifier = verification.build();
-		log.info("jwt verifier : " + jwtVerifier);
-
+		
 		// decoding the token & verifying that with the given token
 		DecodedJWT decodedJWT = jwtVerifier.verify(token);
-		log.info("JWT decoded.......");
-		Claim claim = decodedJWT.getClaim("id");
-		log.info("claim successful..........");
+		Claim claim = decodedJWT.getClaim("user_id");
 		userId = claim.asInt();
-		log.info("Decoded userId : " + userId);
+		log.info("Token decoded successfully");
+		
 		return userId;
 	}
 	

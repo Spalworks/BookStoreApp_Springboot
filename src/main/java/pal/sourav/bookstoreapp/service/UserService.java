@@ -29,7 +29,6 @@ public class UserService implements IUserService {
 	@Autowired
 	EmailService emailService;
 
-	
 	// get all the user details present in the Bookstore
 	@Override
 	public List<User> getAlluser() {
@@ -39,24 +38,21 @@ public class UserService implements IUserService {
 
 		return response;
 	}
-	
-	
+
 	// getting data of a particular user by using the ID of that user
 	@Override
 	public User getUserById(int userId) {
 		Optional<User> response = userRepository.findById(userId);
 		return response.orElseThrow(() -> new BookStoreException("User not found with this userId : " + userId));
 	}
-	
-	
+
 	// getting data of a particular user by using the emailID of that user
 	@Override
 	public User getUserByEmail(String emailId) {
 		Optional<User> response = userRepository.findByEmail(emailId);
 		return response.orElseThrow(() -> new BookStoreException("User not found with this email : " + emailId));
 	}
-	
-	
+
 	// creating a new user by sending the datas in the Body
 	@Override
 	public User createNewUser(UserDTO dto) {
@@ -74,8 +70,9 @@ public class UserService implements IUserService {
 		log.info(token);
 		return user;
 	}
-	
-	
+
+	// user log in(NOTE: If user is not verified i.e.tokenStatus=false then user
+	// will not be able to login)
 	@Override
 	public User userLogin(LoginDTO loginDto) {
 		User existingUser = getUserByEmail(loginDto.getEmail());
@@ -100,7 +97,7 @@ public class UserService implements IUserService {
 			throw new BookStoreException("User is not verified");
 	}
 
-	
+	// getting user by email & then updating user data
 	@Override
 	public User updateUserDataByEmail(String email, UserDTO dto) {
 		User existingUser = getUserByEmail(dto.getEmail());
@@ -120,7 +117,7 @@ public class UserService implements IUserService {
 		return existingUser;
 	}
 
-	
+	// getting user by user ID & then updating user data
 	@Override
 	public User updateUserDataById(int userId, UserDTO dto) {
 		Optional<User> existingUser = userRepository.findById(userId);
@@ -135,14 +132,14 @@ public class UserService implements IUserService {
 					+ userData.getLastName() + " !!!" + "\n\n"
 					+ "User data is updated successfully. To check the User data please click on the link below: "
 					+ "\n" + "http://localhost:8080/user/get-user-by-token/" + newToken);
-			
+
 			return userData;
-		}else
+		} else
 			throw new BookStoreException("User not found with the id: " + userId);
-	
+
 	}
 
-	
+	/* Reset/change the password */
 	@Override
 	public User resetPassword(ChangePasswordDTO dto) {
 		User existingUser = getUserByEmail(dto.getEmail());
@@ -151,9 +148,8 @@ public class UserService implements IUserService {
 			String newPassword = dto.getNewPassword();
 			existingUser.setPassword(newPassword);
 
-//			existingUser.setTokenStatus(true);
 			userRepository.save(existingUser);
-			
+
 			emailService.sendEmail(existingUser.getEmail(), "Update Password",
 					"Hi " + existingUser.getFirstName() + " " + existingUser.getLastName() + " !!!" + "\n\n"
 							+ "This is to inform you that your account password has been updated successfully." + "\n"
@@ -165,7 +161,7 @@ public class UserService implements IUserService {
 		}
 	}
 
-	
+	// Identify the user with token & then delete the user from db
 	@Override
 	public int deleteUserByToken(String token) {
 		int userId = tokenUtil.decodeToken(token);
@@ -178,16 +174,15 @@ public class UserService implements IUserService {
 		return userId;
 	}
 
-	
+	// Getting user details using token
 	@Override
 	public User getUserDataByToken(String token) {
 		int userId = tokenUtil.decodeToken(token);
-		log.info("Id from token: " + userId);
 		Optional<User> response = userRepository.findById(userId);
 		return response.orElseThrow(() -> new BookStoreException("User not found with token : " + token));
 	}
 
-	
+	// Verifying user(tokenStatus=true) using token
 	@Override
 	public User verifyUserbyToken(String token) {
 		int userId = tokenUtil.decodeToken(token);
