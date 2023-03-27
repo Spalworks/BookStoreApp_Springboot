@@ -61,7 +61,7 @@ public class UserController {
 	@GetMapping(value = "/get-user-by-token/{token}")
 	public ResponseEntity<ResponseDTO> getUserByToken(@PathVariable String token){
 		User result = userService.getUserDataByToken(token);
-		ResponseDTO responseDTO = new ResponseDTO(result, "User Data retrieved successfully");
+		ResponseDTO responseDTO = new ResponseDTO(result, "User Data retrived Successfully using token");
 		
 		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.FOUND);
 	}
@@ -70,7 +70,7 @@ public class UserController {
 	@GetMapping(value = "/verify-user-by-token/{token}")
 	public ResponseEntity<ResponseDTO> verifyUserbyToken(@PathVariable String token){
 		User result = userService.verifyUserbyToken(token);
-		ResponseDTO responseDTO = new ResponseDTO(result, "Data retrived Successfully using token");
+		ResponseDTO responseDTO = new ResponseDTO(result, "User verified successfully ");
 		
 		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.FOUND);
 	}
