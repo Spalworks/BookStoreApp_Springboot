@@ -14,7 +14,7 @@ public interface IBookService {
 
 	Book getBookById(int bookId);
 
-	Book getBookByName(String bookName);
+	List<Book> getBookByName(String bookName);
 
 	List<Book> sortBooksAsc();
 
