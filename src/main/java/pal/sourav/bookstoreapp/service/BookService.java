@@ -53,9 +53,13 @@ public class BookService implements IBookService {
 	
 //getting book details from BookId
 	@Override
-	public Book getBookByName(String bookName) {
-		Optional<Book> response = bookRepo.findByBookName(bookName);
-		return response.orElseThrow(() -> new BookStoreException("Book not found with this name : " + bookName));
+	public List<Book> getBookByName(String bookName) {
+		List<Book> response = bookRepo.findByBookName(bookName);
+		
+		if(response.size() != 0)
+			return response;
+		else
+			throw new BookStoreException("Book not found with this name : " + bookName);
 	}
 
 //sorting all the books in ascending order according to the price

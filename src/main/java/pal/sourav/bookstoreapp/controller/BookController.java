@@ -51,8 +51,8 @@ public class BookController {
 	
 	@GetMapping("/get-book-by-name/{bookName}")
 	public ResponseEntity<ResponseDTO> getBookByName(@PathVariable String bookName) {
-		Book result = bookService.getBookByName(bookName);
-		ResponseDTO responseDTO = new ResponseDTO(result, "Record for particular book retrieved successfully !");
+		List<Book> result = bookService.getBookByName(bookName);
+		ResponseDTO responseDTO = new ResponseDTO(result, "Record of book searching retrieved successfully !");
 		return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.FOUND);
 	}
 	
